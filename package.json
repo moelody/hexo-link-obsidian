@@ -4,6 +4,7 @@
     "description": "Convert Obsidian WikiLinks to Markdown format by use obsidian plugin server",
     "main": "index.js",
     "scripts": {
+        "pub": "yarn npm publish",
         "dev": "rollup --config rollup.config.js -w",
         "build": "rollup --config rollup.config.js --environment BUILD:production"
     },
