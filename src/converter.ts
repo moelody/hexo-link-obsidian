@@ -1,9 +1,13 @@
+// @ts-ignore
 const { readlinkSync, lstatSync } = require("fs")
+// @ts-ignore
 const path = require("path")
+// @ts-ignore
 const axios = require("axios")
 
 let linkPort = 3333
 
+// @ts-ignore
 export async function getFirstLinkpathDest(fileLink: string, sourcePath: string) {
     const response = await axios.get(`http://localhost:${linkPort}`, {
         params: {

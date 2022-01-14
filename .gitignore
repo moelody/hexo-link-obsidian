@@ -6,7 +6,13 @@
 .idea
 
 # npm
-node_modules
+/node_modules
+/.pnp
+.pnp.js
+.pnp.cjs
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
 package-lock.json
 
 # Don't include the compiled main.js file in the repo.

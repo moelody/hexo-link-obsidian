@@ -14,7 +14,7 @@
         // "strictNullChecks": true, // button?.addEventListener
         "moduleResolution": "node",
         "importHelpers": true,
-        "lib": ["dom", "es5", "scripthost", "es2015"],
+        "lib": ["dom", "es5", "scripthost", "es2016"],
         "outDir": "./dist"
     },
     "include": ["src/*.ts"]
