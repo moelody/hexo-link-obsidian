@@ -5,21 +5,6 @@ const path = require("path")
 // @ts-ignore
 const axios = require("axios")
 
-let linkPort = 3333
-
-// @ts-ignore
-export async function getFirstLinkpathDest(fileLink: string, sourcePath: string) {
-    const response = await axios.get(`http://localhost:${linkPort}`, {
-        params: {
-            fileLink: fileLink,
-            sourcePath: sourcePath
-        },
-        timeout: 1000
-    })
-
-    return response.data
-}
-
 type TFile = {
     basename: string
     extension: string
@@ -45,6 +30,22 @@ type File = {
     full_source: string
 }
 
+/* -------------------- connect to obsidian -------------------- */
+
+let linkPort = 3333
+// @ts-ignore
+export async function getFirstLinkpathDest(fileLink: string, sourcePath: string) {
+    const response = await axios.get(`http://localhost:${linkPort}`, {
+        params: {
+            fileLink: fileLink,
+            sourcePath: sourcePath
+        },
+        timeout: 1000
+    })
+
+    return response.data
+}
+
 /* -------------------- CONVERTERS -------------------- */
 
 // --> Converts single file to provided final format and save back in the file
@@ -57,8 +58,7 @@ export const convertLinks = async (md: File, port: number = linkPort) => {
     // await fs.writeFile(mdFile.source, newFileText)
 }
 
-/* -------------------- %% Comment Convert %% -------------------- */
-
+// %% Comment Convert %%
 const convertCommentSymbol = (md: string) => {
     let newMdText = md
 
@@ -66,7 +66,7 @@ const convertCommentSymbol = (md: string) => {
     let commentRegex = /^abbrlink\:\s*(\w+)/g
     let commentMatches = newMdText.match(commentRegex)
 
-    commentMatches && (newMdText = newMdText.replace(commentMatches[0], ''))
+    commentMatches && (newMdText = newMdText.replace(commentMatches[0], ""))
 
     return newMdText
 }
@@ -157,6 +157,7 @@ function getAbbrlink(file: TFile) {
 
     return abbrLink
 }
+
 /* -------------------- LINK DETECTOR -------------------- */
 
 type LinkType = "markdown" | "wiki" | "wikiTransclusion" | "mdTransclusion"
