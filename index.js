@@ -49,6 +49,7 @@ hexo.extend.filter.register(
 
             let filePath = decodeURI(url)
             await dirExists(dir_images)
+            links = links.concat(absolute_images).concat(relative_images)
             fs.copyFileSync(filePath, path.join(dir_images, path.basename(filePath)))
 
             if ([".mp4", ".webm", ".ogg"].includes(path.extname(filePath))) {
@@ -57,7 +58,6 @@ hexo.extend.filter.register(
                 content = content.replace(ourl, encodeURI("images/" + path.basename(filePath)))
             }
         }
-        links.concat(absolute_images).concat(relative_images)
         data.content = content
 
         return data
