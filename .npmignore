@@ -1,0 +1,5 @@
+./src/*
+.vscode
+.yarnrc
+rollup.config.js
+tsconfig.json
