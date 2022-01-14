@@ -51,15 +51,30 @@ type File = {
 export const convertLinks = async (md: File, port: number = linkPort) => {
     linkPort = port
     let fileText = md.content
-    let newFileText = await convertWikiLinksToMarkdown(fileText, md)
+    let newFileText = convertCommentSymbol(fileText)
+    newFileText = await convertWikiLinksToMarkdown(fileText, md)
     return newFileText
     // await fs.writeFile(mdFile.source, newFileText)
+}
+
+/* -------------------- %% Comment Convert %% -------------------- */
+
+const convertCommentSymbol = (md: string) => {
+    let newMdText = md
+
+    // --> Get All %% %%
+    let commentRegex = /^abbrlink\:\s*(\w+)/g
+    let commentMatches = newMdText.match(commentRegex)
+
+    commentMatches && (newMdText = newMdText.replace(commentMatches[0], ''))
+
+    return newMdText
 }
 
 /* -------------------- LINKS TO MARKDOWN CONVERTER -------------------- */
 
 // --> Converts links within given string from Wiki to MD
-export const convertWikiLinksToMarkdown = async (md: string, sourceFile: File): Promise<string> => {
+const convertWikiLinksToMarkdown = async (md: string, sourceFile: File): Promise<string> => {
     let newMdText = md
     let linkMatches: LinkMatch[] = getAllLinkMatchesInFile(md)
     // --> Convert Wiki Internal Links to Markdown Link
