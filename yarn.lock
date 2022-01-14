@@ -94,16 +94,6 @@
   dependencies:
     "@types/node" "*"
 
-ansi-regex@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.nlark.com/ansi-regex/download/ansi-regex-2.1.1.tgz?cache=0&sync_timestamp=1631634988487&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fansi-regex%2Fdownload%2Fansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
-  integrity sha1-w7M6te42DYbg5ijwRorn7yfWVN8=
-
-ansi-styles@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.nlark.com/ansi-styles/download/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
-  integrity sha1-tDLdM1i2NM914eRmQ2gkBTPB3b4=
-
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "https://registry.nlark.com/ansi-styles/download/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
@@ -113,7 +103,7 @@ ansi-styles@^3.2.1:
 
 axios@^0.24.0:
   version "0.24.0"
-  resolved "https://registry.npmmirror.com/axios/download/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
   integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
   dependencies:
     follow-redirects "^1.14.4"
@@ -140,17 +130,6 @@ builtin-modules@^3.1.0:
   version "3.2.0"
   resolved "https://registry.nlark.com/builtin-modules/download/builtin-modules-3.2.0.tgz#45d5db99e7ee5e6bc4f362e008bf917ab5049887"
   integrity sha1-RdXbmefuXmvE82LgCL+RerUEmIc=
-
-chalk@^1.1.1:
-  version "1.1.3"
-  resolved "https://registry.npmmirror.com/chalk/download/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
-  integrity sha1-qBFcVeSnAv5NFQq9OHKCKn4J/Jg=
-  dependencies:
-    ansi-styles "^2.2.1"
-    escape-string-regexp "^1.0.2"
-    has-ansi "^2.0.0"
-    strip-ansi "^3.0.0"
-    supports-color "^2.0.0"
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -193,7 +172,7 @@ deepmerge@^4.2.2:
   resolved "https://registry.nlark.com/deepmerge/download/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha1-RNLqNnm49NT/ujPwPYZfwee/SVU=
 
-escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
+escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.nlark.com/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
@@ -215,7 +194,7 @@ estree-walker@^2.0.1:
 
 follow-redirects@^1.14.4:
   version "1.14.7"
-  resolved "https://registry.npmmirror.com/follow-redirects/download/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
   integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
 
 fs.realpath@^1.0.0:
@@ -233,17 +212,6 @@ function-bind@^1.1.1:
   resolved "https://registry.nlark.com/function-bind/download/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha1-pWiZ0+o8m6uHS7l3O3xe3pL0iV0=
 
-glob@^6.0.1:
-  version "6.0.4"
-  resolved "https://registry.npmmirror.com/glob/download/glob-6.0.4.tgz#0f08860f6a155127b2fadd4f9ce24b1aab6e4d22"
-  integrity sha512-MKZeRNyYZAVVVG1oZeLaWie1uweH40m9AZwIwxyPbTSX4hHrVYSzLg0Ro5Z5R7XKkIX+Cc6oD1rqeDJnwsB8/A==
-  dependencies:
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "2 || 3"
-    once "^1.3.0"
-    path-is-absolute "^1.0.0"
-
 glob@^7.1.6:
   version "7.2.0"
   resolved "https://registry.npmmirror.com/glob/download/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
@@ -255,13 +223,6 @@ glob@^7.1.6:
     minimatch "^3.0.4"
     once "^1.3.0"
     path-is-absolute "^1.0.0"
-
-has-ansi@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.nlark.com/has-ansi/download/has-ansi-2.0.0.tgz?cache=0&sync_timestamp=1631556818250&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fhas-ansi%2Fdownload%2Fhas-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
-  integrity sha1-NPUEnOHs3ysGSa8+8k5F7TVBbZE=
-  dependencies:
-    ansi-regex "^2.0.0"
 
 has-flag@^3.0.0:
   version "3.0.0"
@@ -280,22 +241,12 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hexo-bunyan@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmmirror.com/hexo-bunyan/download/hexo-bunyan-1.0.0.tgz#b2106b26547b232f0195db863cb5d5ff8527fd36"
-  integrity sha1-shBrJlR7Iy8BlduGPLXV/4Un/TY=
-  optionalDependencies:
-    moment "^2.10.6"
-    mv "~2"
-    safe-json-stringify "~1"
-
-hexo-log@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmmirror.com/hexo-log/download/hexo-log-0.2.0.tgz#d30fd45e1a12a83c88033586640485efc5df5a6f"
-  integrity sha1-0w/UXhoSqDyIAzWGZASF78XfWm8=
+hexo-log@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/hexo-log/-/hexo-log-3.0.0.tgz#bbdb75eabef3bf7aee83400a3969db06d5539b61"
+  integrity sha512-fd87qXYznpNTa8SLov+wjDsrPssk4yKSgdIQg1wJPcuthy8ngvbXYdqaJ4vWMSADZ+D257EmKXTJHJyaxJQhVw==
   dependencies:
-    chalk "^1.1.1"
-    hexo-bunyan "^1.0.0"
+    nanocolors "^0.2.12"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -355,43 +306,17 @@ merge-stream@^2.0.0:
   resolved "https://registry.nlark.com/merge-stream/download/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha1-UoI2KaFN0AyXcPtq1H3GMQ8sH2A=
 
-"minimatch@2 || 3", minimatch@^3.0.4:
+minimatch@^3.0.4:
   version "3.0.4"
   resolved "https://registry.nlark.com/minimatch/download/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   integrity sha1-UWbihkV/AzBgZL5Ul+jbsMPTIIM=
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.nlark.com/minimist/download/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=
-
-mkdirp@~0.5.1:
-  version "0.5.5"
-  resolved "https://registry.npmmirror.com/mkdirp/download/mkdirp-0.5.5.tgz#d91cefd62d1436ca0f41620e251288d420099def"
-  integrity sha1-2Rzv1i0UNsoPQWIOJRKI1CAJne8=
-  dependencies:
-    minimist "^1.2.5"
-
-moment@^2.10.6:
-  version "2.29.1"
-  resolved "https://registry.npmmirror.com/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
-
-mv@~2:
-  version "2.1.1"
-  resolved "https://registry.nlark.com/mv/download/mv-2.1.1.tgz#ae6ce0d6f6d5e0a4f7d893798d03c1ea9559b6a2"
-  integrity sha1-rmzg1vbV4KT32JN5jQPB6pVZtqI=
-  dependencies:
-    mkdirp "~0.5.1"
-    ncp "~2.0.0"
-    rimraf "~2.4.0"
-
-ncp@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.nlark.com/ncp/download/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
-  integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=
+nanocolors@^0.2.12:
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.2.13.tgz#dfd1ed0bfab05e9fe540eb6874525f0a1684099b"
+  integrity sha512-0n3mSAQLPpGLV9ORXT5+C/D4mwew7Ebws69Hx4E2sgz2ZA5+32Q80B9tL8PbL7XHnRDiAxH/pnrUJ9a4fkTNTA==
 
 once@^1.3.0:
   version "1.4.0"
@@ -431,13 +356,6 @@ resolve@^1.10.0, resolve@^1.17.0, resolve@^1.19.0:
     path-parse "^1.0.7"
     supports-preserve-symlinks-flag "^1.0.0"
 
-rimraf@~2.4.0:
-  version "2.4.5"
-  resolved "https://registry.npmmirror.com/rimraf/download/rimraf-2.4.5.tgz#ee710ce5d93a8fdb856fb5ea8ff0e2d75934b2da"
-  integrity sha1-7nEM5dk6j9uFb7Xqj/Di11k0sto=
-  dependencies:
-    glob "^6.0.1"
-
 rollup-plugin-terser@^7.0.2:
   version "7.0.2"
   resolved "https://registry.nlark.com/rollup-plugin-terser/download/rollup-plugin-terser-7.0.2.tgz?cache=0&sync_timestamp=1624608054881&other_urls=https%3A%2F%2Fregistry.nlark.com%2Frollup-plugin-terser%2Fdownload%2Frollup-plugin-terser-7.0.2.tgz#e8fbba4869981b2dc35ae7e8a502d5c6c04d324d"
@@ -475,11 +393,6 @@ safe-buffer@^5.1.0:
   resolved "https://registry.nlark.com/safe-buffer/download/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha1-Hq+fqb2x/dTsdfWPnNtOa3gn7sY=
 
-safe-json-stringify@~1:
-  version "1.2.0"
-  resolved "https://registry.nlark.com/safe-json-stringify/download/safe-json-stringify-1.2.0.tgz#356e44bc98f1f93ce45df14bcd7c01cda86e0afd"
-  integrity sha1-NW5EvJjx+TzkXfFLzXwBzahuCv0=
-
 serialize-javascript@^4.0.0:
   version "4.0.0"
   resolved "https://registry.nlark.com/serialize-javascript/download/serialize-javascript-4.0.0.tgz?cache=0&sync_timestamp=1624608021459&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fserialize-javascript%2Fdownload%2Fserialize-javascript-4.0.0.tgz#b525e1238489a5ecfc42afacc3fe99e666f4b1aa"
@@ -509,18 +422,6 @@ sourcemap-codec@^1.4.4:
   version "1.4.8"
   resolved "https://registry.nlark.com/sourcemap-codec/download/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha1-6oBL2UhXQC5pktBaOO8a41qatMQ=
-
-strip-ansi@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.npmmirror.com/strip-ansi/download/strip-ansi-3.0.1.tgz?cache=0&sync_timestamp=1632420477162&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fstrip-ansi%2Fdownload%2Fstrip-ansi-3.0.1.tgz#6a385fb8853d952d5ff05d0e8aaf94278dc63dcf"
-  integrity sha1-ajhfuIU9lS1f8F0Oiq+UJ43GPc8=
-  dependencies:
-    ansi-regex "^2.0.0"
-
-supports-color@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmmirror.com/supports-color/download/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
-  integrity sha1-U10EXOa2Nj+kARcIRimZXp3zJMc=
 
 supports-color@^5.3.0:
   version "5.5.0"
