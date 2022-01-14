@@ -1,46 +1,51 @@
-const { readlinkSync, lstatSync } = require('fs');
-const path = require('path');
-const axios = require('axios')
+const { readlinkSync, lstatSync } = require("fs")
+const path = require("path")
+const axios = require("axios")
+
+let linkPort = 3333
 
 export async function getFirstLinkpathDest(fileLink: string, sourcePath: string) {
-    const response = await axios.get("http://localhost:3333", {
+    const response = await axios.get(`http://localhost:${linkPort}`, {
         params: {
             fileLink: fileLink,
             sourcePath: sourcePath
-        }
+        },
+        timeout: 1000
     })
+
     return response.data
 }
 
 type TFile = {
-    basename: string,
+    basename: string
     extension: string
-    name: string, 
+    name: string
     parent: {
-        name: string,
+        name: string
         path: string
-    },
-    path: string,
+    }
+    path: string
     vault: {
         adapter: {
             basePath: string
         }
-    },
+    }
     content: string
 }
 
 type File = {
-    source: string,
-    slug: string,
-    path: string,
-    content: string,
+    source: string
+    slug: string
+    path: string
+    content: string
     full_source: string
 }
 
 /* -------------------- CONVERTERS -------------------- */
 
 // --> Converts single file to provided final format and save back in the file
-export const convertLinks = async (md: File) => {
+export const convertLinks = async (md: File, port: number = linkPort) => {
+    linkPort = port
     let fileText = md.content
     let newFileText = await convertWikiLinksToMarkdown(fileText, md)
     return newFileText
@@ -63,7 +68,7 @@ export const convertWikiLinksToMarkdown = async (md: string, sourceFile: File): 
     let wikiTransclusions = linkMatches.filter(match => match.type === "wikiTransclusion")
     for (let wikiTransclusion of wikiTransclusions) {
         let wikiTransclusionLink = await createLink("mdTransclusion", wikiTransclusion.linkText, wikiTransclusion.altOrBlockRef, sourceFile)
-        
+
         newMdText = newMdText.replace(wikiTransclusion.match, wikiTransclusionLink)
     }
     return newMdText
@@ -73,7 +78,8 @@ export const convertWikiLinksToMarkdown = async (md: string, sourceFile: File): 
 
 const createLink = async (dest: LinkType, originalLink: string, altOrBlockRef: string, sourceFile: File) => {
     let finalLink = originalLink
-    let altText: string
+    let altText = ""
+    let encodedBlockRef = ""
 
     // 原链接文本
     let fileLink = decodeURI(finalLink)
@@ -82,42 +88,42 @@ const createLink = async (dest: LinkType, originalLink: string, altOrBlockRef: s
     let filePath = stats.isSymbolicLink() ? readlinkSync(sourceFile.full_source) : sourceFile.full_source
     let file = await getFirstLinkpathDest(fileLink, filePath)
 
+    finalLink = file.extension === "md" ? getAbbrlink(file) : getAbsoluteLink(file)
     if (dest === "markdown") {
-        finalLink = getAbsoluteLink(file)
         // If there is no alt text specifiec and file exists, the alt text needs to be always the file base name
         if (altOrBlockRef !== "") {
             altText = altOrBlockRef
         } else {
             altText = file ? file.basename : finalLink
         }
-        return `[${altText}](${encodeURI(finalLink)})`
-    } else if (dest === 'mdTransclusion') {
-        finalLink = getAbbrlink(file)
-        return `<a href="/${finalLink}" data-pjax-state></a>`
+    } else if (dest === "mdTransclusion") {
         // --> To skip encoding ^
-        // let encodedBlockRef = altOrBlockRef;
-        // if (altOrBlockRef.startsWith('^')) {
-        //     encodedBlockRef = encodeURI(encodedBlockRef.slice(1));
-        //     encodedBlockRef = `^${encodedBlockRef}`;
-        // } else {
-        //     encodedBlockRef = encodeURI(encodedBlockRef);
-        // }
-        // return `[](${encodeURI(finalLink)}#${encodedBlockRef})`
+        encodedBlockRef = altOrBlockRef
+        if (altOrBlockRef.startsWith("^")) {
+            encodedBlockRef = encodeURI(encodedBlockRef.slice(1))
+            encodedBlockRef = `^${encodedBlockRef}`
+        } else {
+            encodedBlockRef = encodeURI(encodedBlockRef)
+        }
+    }
+
+    if (["md"].includes(file.extension)) {
+        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}" data-pjax-state></a>`
+    } else if (["png", "jpg", "jpeg", "gif"].includes(file.extension)) {
+        return `![${altText}](${encodeURI(finalLink)})`
+    } else if (["mp4", "webm", "ogg"].includes(file.extension)) {
+        return `<video src="![](${encodeURI(finalLink)})" ${decodeURI(encodedBlockRef)}></video>`
     } else {
-        return ""
+        return `[${altText}](${encodeURI(finalLink)})`
     }
 }
 
 function getAbsoluteLink(file: TFile) {
     let fileLink: string
 
-    fileLink = path.join(file.vault.adapter.basePath, '/', file.path)
+    fileLink = path.join(file.vault.adapter.basePath, "/", file.path)
 
     return fileLink
-}
-
-interface AbbrlinkMatch {
-    url: string
 }
 
 function getAbbrlink(file: TFile) {
@@ -125,10 +131,10 @@ function getAbbrlink(file: TFile) {
     let fileText = file.content
 
     // --> Get All WikiLinks
-    let abbrlinkRegex = /abbrlink\:\s(\w+)/
+    let abbrlinkRegex = /^abbrlink\:\s*(\w+)/m
     let abbrlinkMatches = fileText.match(abbrlinkRegex)
 
-    abbrLink = abbrlinkMatches ? 'post/' + abbrlinkMatches[1] : '404'
+    abbrLink = abbrlinkMatches ? "post/" + abbrlinkMatches[1] : "404"
 
     return abbrLink
 }
@@ -212,7 +218,7 @@ const getAllLinkMatchesInFile = (md: string): LinkMatch[] => {
                         type: "wikiTransclusion",
                         match: wikiMatch,
                         linkText: fileName,
-                        altOrBlockRef: blockRefMatch,
+                        altOrBlockRef: blockRefMatch
                         // sourceFilePath: mdFile.path
                     }
                     linkMatches.push(linkMatch)
@@ -229,7 +235,7 @@ const getAllLinkMatchesInFile = (md: string): LinkMatch[] => {
                     type: "wiki",
                     match: wikiMatch,
                     linkText: fileMatch[0],
-                    altOrBlockRef: altMatch ? altMatch[0] : "",
+                    altOrBlockRef: altMatch ? altMatch[0] : ""
                     // sourceFilePath: mdFile.path
                 }
                 linkMatches.push(linkMatch)
@@ -254,7 +260,7 @@ const getAllLinkMatchesInFile = (md: string): LinkMatch[] => {
                         type: "mdTransclusion",
                         match: markdownMatch,
                         linkText: fileName,
-                        altOrBlockRef: blockRefMatch,
+                        altOrBlockRef: blockRefMatch
                         // sourceFilePath: mdFile.path
                     }
                     linkMatches.push(linkMatch)
@@ -271,7 +277,7 @@ const getAllLinkMatchesInFile = (md: string): LinkMatch[] => {
                     type: "markdown",
                     match: markdownMatch,
                     linkText: fileMatch[0],
-                    altOrBlockRef: altMatch ? altMatch[0] : "",
+                    altOrBlockRef: altMatch ? altMatch[0] : ""
                     // sourceFilePath: mdFile.path
                 }
                 linkMatches.push(linkMatch)

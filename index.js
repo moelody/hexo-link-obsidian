@@ -1,26 +1,76 @@
 const { convertLinks } = require("./converter")
 const path = require("path")
 const fs = require("fs")
+const log = require('hexo-log')({
+    debug: false,
+    silent: false
+});
+
+let post_render = 0;
+let info = 1;
+let links = []
 
 hexo.extend.filter.register(
     "before_post_render",
     async function (data) {
-        let content = (data.content = await convertLinks(data))
+        post_render = 1;
+        const config = this.config.link_obsidian
+        let content = data.content
+        try {
+            content = data.content = await convertLinks(data, config?.port)
+        } catch (err){
+            log.info('Failed to link obsidian port', err.message)
+            info = 1
+        }
 
         //获取图片链接
-        let pattern = /\[.*?\]\((.*?)\)/g
+        let absolute_images = []
+        let relative_images = []
+        let online_images = []
+        let pattern = /!\[.*?\]\((.*?)\)/g
         let dir_root = this.base_dir
         let dir_source = this.source_dir
         let dir_public = this.public_dir
         let dir_images = path.join(dir_public, data.path, "images")
 
-        while ((match = pattern.exec(content)) != null) {
-            let filePath = decodeURI(match[1])
+        while ((matchs = pattern.exec(data.content)) != null) {
+            let match = matchs[0]
+            let url = matchs[1]
+            let ourl = url
+            if (url[0] == '/' || url[0] == '~' || url[1] == ':') {
+                absolute_images.push(url)
+            } else if (/^http/.test(url)) {
+                online_images.push(url)
+                continue;
+            } else if (url) {
+                relative_images.push(url)
+                url = path.join(path.dirname(data.asset_dir), url)
+            }
+
+            let filePath = decodeURI(url)
             await dirExists(dir_images)
             fs.copyFileSync(filePath, path.join(dir_images, path.basename(filePath)))
+
+            if ([".mp4", ".webm", ".ogg"].includes(path.extname(filePath))) {
+                content = content.replace(match, encodeURI("images/" + path.basename(filePath)))
+            } else {
+                content = content.replace(ourl, encodeURI("images/" + path.basename(filePath)))
+            }
         }
+        links.concat(absolute_images).concat(relative_images)
+        data.content = content
 
         return data
+    },
+    1
+)
+
+hexo.extend.filter.register(
+    "before_exit",
+    async function () {
+        
+        post_render && log.info(`Convert && Copy ${links.length} wikiLink files ${info?'success':'error'}!`)
+
     },
     1
 )
@@ -79,92 +129,3 @@ async function dirExists(dir) {
     }
     return mkdirStatus
 }
-
-// const diff_list = []
-
-// hexo.extend.filter.register(
-//     "before_post_render",
-//     async function (data) {
-//         let content = (data.content = await convertLinks(data))
-
-//         //获取图片链接
-//         let diff = {
-//             parent: data.path,
-//             links: []
-//         }
-//         let pattern = /\[.*?\]\((.*?)\)/g
-
-//         while ((match = pattern.exec(content)) != null) {
-//             diff.links.push(match[1])
-//         }
-
-//         diff_list.push(diff)
-
-//         return data
-//     },
-//     1
-// )
-
-// hexo.extend.filter.register(
-//     "before_exit",
-//     async function () {
-//         let dir_root = this.base_dir
-//         let dir_source = this.source_dir
-//         let dir_public = this.public_dir
-//         if (diff_list) {
-//             diff_list.forEach(function(diff){
-//                 let { parent, links } = diff
-//                 // 复制到Public目录下
-//                 let dir_images = path.join(dir_public, parent, 'images')
-//                 diff.links.forEach(function(link){
-//                     let filePath = decodeURI(link)
-//                     console.log(filePath)
-//                     // console.log(fs.existsSync(path.join(dir_public, path.basename(filePath))))
-//                     fs.copyFileSync(filePath, path.join(dir_images, path.basename(filePath)))
-//                 })
-//             })
-//         }
-//     },
-//     1
-// )
-
-/* 
-_Document {
-    _content: '>动态设计中也常用到曲线，重要的是熟悉基础理论和熟悉各种事物的运动规律。比如人物的走路方式也分情感\n' +
-        '\n' +
-        '![[feat#test]]\n' +
-        '\n' +
-        '### 中间关键帧漂浮穿梭\n' +
-        '![[黄金眼瞳女.png]]\n',
-    source: '_posts/合成漫画 1.md',
-    raw: '>动态设计中也常用到曲线，重要的是熟悉基础理论和熟悉各种事物的运动规律。比如人物的走路方式也分情感\n' +
-        '\n' +
-        '![[feat#test]]\n' +
-        '\n' +
-        '### 中间关键帧漂浮穿梭\n' +
-        '![[黄金眼瞳女.png]]\n',
-    slug: '合成漫画 1',
-    published: true,
-    date: Moment<2022-01-11T09:58:39+08:00>,
-    updated: Moment<2022-01-12T10:58:41+08:00>,
-    title: '',
-    comments: true,
-    layout: 'post',
-    photos: [],
-    link: '',
-    _id: 'ckyaz5hwm00009k5hhalgdfs2',
-    path: [Getter],
-    permalink: [Getter],
-    full_source: [Getter],
-    asset_dir: [Getter],
-    tags: [Getter],
-    categories: [Getter],
-    content: '>动态设计中也常用到曲线，重要的是熟悉基础理论和熟悉各种事物的运动规律。比如人物的走路方式也分情感\n' +
-        '\n' +
-        '![[feat#test]]\n' +
-        '\n' +
-        '### 中间关键帧漂浮穿梭\n' +
-        '![[黄金眼瞳女.png]]\n',
-    site: { data: {} }
-    }
-*/

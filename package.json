@@ -1,7 +1,7 @@
 {
     "name": "hexo-link-obsidian",
-    "version": "0.0.1",
-    "description": "Convert Obsidian WikiLinks to Markdown format with server",
+    "version": "1.0.1",
+    "description": "Convert Obsidian WikiLinks to Markdown format by use obsidian plugin server",
     "main": "index.js",
     "scripts": {
         "dev": "rollup --config rollup.config.js -w",
@@ -23,8 +23,6 @@
     },
     "homepage": "https://github.com/moelody/hexo-link-obsidian#readme",
     "dependencies": {
-        "eventproxy": "^1.0.0",
-        "hexo-fs": "^0.2.3",
         "hexo-log": "^0.2.0"
     },
     "devDependencies": {
