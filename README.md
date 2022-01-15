@@ -10,9 +10,10 @@ Hexo 博客插件，插件将自动请求ob插件以处理_posts中所有文档�
 - .* 其他类型文件将被转为常规md形式`[]()`，更多格式支持欢迎提issue
 
 ## 新增功能
-- 转换Obsidian插件Media Extended嵌入的视频为相应的iframe标签如 `![官方教程|720x360](https://www.bilibili.com/video/BV15a4y1L7K7)` 转为
-  `<iframe width="720" height="360" src="https://player.bilibili.com/player.html?bvid=BV15a4y1L7K7&high_quality=1&danmaku=0&as_wide=1&" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="bili-iframe"> </iframe>`
-  目前支持 `www.bilibili.com` `youtube.com` `www.youtube.com` `youtu.be` `vimeo.com` 链接等形式
+- 转换Obsidian插件Media Extended嵌入的视频为相应的iframe标签如
+  - `![官方教程|720x360](https://www.bilibili.com/video/BV15a4y1L7K7)` 转为
+  - `<iframe width="720" height="360" src="https://player.bilibili.com/player.html?bvid=BV15a4y1L7K7&high_quality=1&danmaku=0&as_wide=1&" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="bili-iframe"> </iframe>`
+  - 目前只支持 `www.bilibili.com` `youtube.com` `www.youtube.com` `youtu.be` `vimeo.com` 等嵌入链接
 
 ### 安装
 
