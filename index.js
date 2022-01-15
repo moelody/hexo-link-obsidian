@@ -19,7 +19,7 @@ hexo.extend.filter.register(
         try {
             content = data.content = await convertLinks(data, config?.port)
         } catch (err){
-            log.info('Failed to link obsidian port', err.message)
+            log.info('hexo-link-obsidian failed to link obsidian port', err.message)
             info = 1
         }
 
@@ -27,7 +27,7 @@ hexo.extend.filter.register(
         let absolute_images = []
         let relative_images = []
         let online_images = []
-        let pattern = /!\[.*?\]\((.*?)\)/g
+        let pattern = /!\[(.*?)\]\((.*?)\)/g
         let dir_root = this.base_dir
         let dir_source = this.source_dir
         let dir_public = this.public_dir
@@ -35,12 +35,15 @@ hexo.extend.filter.register(
 
         while ((matchs = pattern.exec(data.content)) != null) {
             let match = matchs[0]
-            let url = matchs[1]
+            let title = matchs[1]
+            let url = matchs[2]
             let ourl = url
             if (url[0] == '/' || url[0] == '~' || url[1] == ':') {
                 absolute_images.push(url)
             } else if (/^http/.test(url)) {
                 online_images.push(url)
+                let size = ~title.indexOf("|") ? title.split("|").pop().split("x") : [720, 360]
+                content = content.replace(match, convertOnlineMediaEmbedLink(url, size))
                 continue;
             } else if (url) {
                 relative_images.push(url)
@@ -69,11 +72,78 @@ hexo.extend.filter.register(
     "before_exit",
     async function () {
         
-        post_render && log.info(`Convert && Copy ${links.length} wikiLink files ${info?'success':'error'}!`)
+        post_render && log.info(`hexo-link-obsidian Convert && Copy ${links.length} wikiLink files ${info?'success':'error'}!`)
 
     },
     1
 )
+
+
+/* -------------------- CONVERTER Online Media Embed Link -------------------- */
+
+function convertOnlineMediaEmbedLink(src, size = [720, 360]) {
+    src = new URL(src)
+
+    switch (src.hostname) {
+        case "www.bilibili.com":
+            if (src.pathname.startsWith("/video")) {
+                let videoId = src.pathname.replace("/video/", "")
+                let queryStr = ''
+                if (/^bv/i.test(videoId)) {
+                    queryStr = `?bvid=${videoId}`
+                } else if (/^av/i.test(videoId)) {
+                    videoId = videoId.substring(2)
+                    queryStr = `?aid=${videoId}`
+                } else {
+                    console.log(`invaild bilibili video id: ${videoId}`)
+                    return null
+                }
+                let page = src.searchParams.get("p")
+                if (page) queryStr += `&page=${page}`
+                return `<iframe width="${size[0]}" height="${size[1]}" src="https://player.bilibili.com/player.html${queryStr}&high_quality=1&danmaku=0&as_wide=1&" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" class="bili-iframe"> </iframe>`
+            }
+            break;
+        case "youtube.com":
+        case "www.youtube.com":
+        case "youtu.be":
+            if (src.pathname === "/watch") {
+                let videoId = src.searchParams.get("v")
+                if (videoId) {
+                    return `<iframe width="${size[0]}" height="${size[1]}" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                } else {
+                    console.log(`invalid youtube video id: ${src.toString()}`)
+                    return null
+                }
+            } else if (src.host === "youtu.be") {
+                if (/^\/[^\/]+$/.test(src.pathname)) {
+                    let videoId = src.pathname.substring(1)
+                    return `<iframe width="${size[0]}" height="${size[1]}" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                } else {
+                    console.log(`invalid youtube video id: ${src.toString()}`)
+                    return null
+                }
+            } else {
+                console.log("youtube video url not supported or invalid")
+                return null
+            }
+            break
+        case "vimeo.com":
+            const path = src.pathname
+            let match
+            if ((match = path.match(/^\/(\d+)$/))) {
+                let videoId = match[1]
+                return `<iframe width="${size[0]}" height="${size[1]}" src="https://player.vimeo.com/video/${videoId}" frameborder="0" fullscreen; picture-in-picture" allowfullscreen></iframe>`
+            } else {
+                console.log("vimeo video url not supported or invalid")
+                return null
+            }
+        default:
+            return null
+    }
+}
+
+/* -------------------- 文件目录生成 -------------------- */
+
 /**
  * 读取路径信息
  * @param {string} path 路径
