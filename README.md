@@ -1,7 +1,9 @@
 # hexo-link-obsidian
 ![node](https://img.shields.io/badge/node-%3E%3D10.0.0-green.svg)
 
-此插件须配合Obsidian插件使用[link-info-server](https://github.com/moelody/link-info-server)
+此插件必须配合
+- Obsidian插件[link-info-server](https://github.com/moelody/link-info-server) 获取双向文件信息
+- hexo插件[abbrlink](https://github.com/rozbo/hexo-abbrlink) 生成网页永久链接
 
 Hexo 博客插件，插件将自动请求ob插件以处理_posts中所有文档（包括符号链接的文档）的wiki链接，各类型文件的处理方式如下：
 - .md 根据文档头部内容里 `abbrlink: <link>` 的永久链接（**必需否则404**）生成 `<a href="/post/<link>#<encodedBlockRef>" data-pjax-state></a>` 文章链接的形式
