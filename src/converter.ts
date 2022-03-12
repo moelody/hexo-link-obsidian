@@ -148,6 +148,7 @@ function getAbsoluteLink(file: TFile) {
 function getAbbrlink(file: TFile) {
     let abbrLink: string
     let fileText = file.content
+    console.log(file)
 
     // --> Get All WikiLinks
     let abbrlinkRegex = /^abbrlink\:\s*(\w+)/m

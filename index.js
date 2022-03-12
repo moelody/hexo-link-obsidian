@@ -7,7 +7,6 @@ const log = require('hexo-log')({
 });
 
 let post_render = 0;
-let info = 1;
 let links = []
 
 hexo.extend.filter.register(
@@ -19,8 +18,7 @@ hexo.extend.filter.register(
         try {
             content = data.content = await convertLinks(data, config?.port)
         } catch (err){
-            log.info('hexo-link-obsidian failed to link obsidian port', err.message)
-            info = 0
+            log.info('hexo-link-obsidian failed to convert', data.source, ': ', err.message)
         }
 
         //获取图片链接
@@ -34,6 +32,7 @@ hexo.extend.filter.register(
         let dir_images = path.join(dir_public, data.path, "images")
 
         while ((matchs = pattern.exec(data.content)) != null) {
+            console.log(matchs)
             let match = matchs[0]
             let title = matchs[1]
             let url = matchs[2]
@@ -72,7 +71,7 @@ hexo.extend.filter.register(
     "before_exit",
     async function () {
         
-        post_render && log.info(`hexo-link-obsidian Convert && Copy ${links.length} wikiLink files ${info?'success':'error'}!`)
+        post_render && log.info(`hexo-link-obsidian Convert && Copy ${links.length} wikiLink files success!`)
 
     },
     1
