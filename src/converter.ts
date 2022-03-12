@@ -47,10 +47,11 @@ export async function getFirstLinkpathDest(fileLink: string, sourcePath: string)
 }
 
 /* -------------------- CONVERTERS -------------------- */
-
+let permalink = 'posts/'
 // --> Converts single file to provided final format and save back in the file
-export const convertLinks = async (md: File, port: number = linkPort) => {
+export const convertLinks = async (md: File, port: number = linkPort, permal: string = permalink) => {
     linkPort = port
+    permalink = permal
     let fileText = md.content
     let newFileText = convertCommentSymbol(fileText)
     newFileText = await convertWikiLinksToMarkdown(fileText, md)
@@ -127,7 +128,7 @@ const createLink = async (dest: LinkType, originalLink: string, altOrBlockRef: s
     }
 
     if (["md"].includes(file.extension)) {
-        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}" data-pjax-state></a>`
+        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}" data-pjax-state>${altText}</a>`
     } else if (["png", "jpg", "jpeg", "gif"].includes(file.extension)) {
         return `![${altText}](${encodeURI(finalLink)})`
     } else if (["mp4", "webm", "ogg"].includes(file.extension)) {
@@ -148,13 +149,11 @@ function getAbsoluteLink(file: TFile) {
 function getAbbrlink(file: TFile) {
     let abbrLink: string
     let fileText = file.content
-    console.log(file)
 
-    // --> Get All WikiLinks
-    let abbrlinkRegex = /^abbrlink\:\s*(\w+)/m
+    let abbrlinkRegex = /^abbrlink\:\s*([\'\"])*(\w+)\1+?/m
     let abbrlinkMatches = fileText.match(abbrlinkRegex)
 
-    abbrLink = abbrlinkMatches ? "post/" + abbrlinkMatches[1] : "404"
+    abbrLink = abbrlinkMatches ? permalink + abbrlinkMatches[2] : "404"
 
     return abbrLink
 }

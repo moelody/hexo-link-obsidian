@@ -16,7 +16,7 @@ hexo.extend.filter.register(
         const config = this.config.link_obsidian
         let content = data.content
         try {
-            content = data.content = await convertLinks(data, config?.port)
+            content = data.content = await convertLinks(data, config && config.port || undefined, this.config.permalink.split(':abbrlink')[0])
         } catch (err){
             log.info('hexo-link-obsidian failed to convert', data.source, ': ', err.message)
         }
