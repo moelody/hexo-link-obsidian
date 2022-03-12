@@ -20,7 +20,7 @@ hexo.extend.filter.register(
             content = data.content = await convertLinks(data, config?.port)
         } catch (err){
             log.info('hexo-link-obsidian failed to link obsidian port', err.message)
-            info = 1
+            info = 0
         }
 
         //获取图片链接

@@ -1,6 +1,6 @@
 {
     "name": "hexo-link-obsidian",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Convert Obsidian WikiLinks to Markdown format by use obsidian plugin server",
     "main": "index.js",
     "scripts": {
