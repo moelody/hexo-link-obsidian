@@ -32,7 +32,6 @@ hexo.extend.filter.register(
         let dir_images = path.join(dir_public, data.path, "images")
 
         while ((matchs = pattern.exec(data.content)) != null) {
-            console.log(matchs)
             let match = matchs[0]
             let title = matchs[1]
             let url = matchs[2]
