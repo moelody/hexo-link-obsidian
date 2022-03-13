@@ -109,16 +109,26 @@ const createLink = async (dest: LinkType, originalLink: string, altOrBlockRef: s
     let file = await getFirstLinkpathDest(fileLink, filePath)
 
     finalLink = file.extension === "md" ? getAbbrlink(file) : getAbsoluteLink(file)
-    if (dest === "markdown") {
-        // If there is no alt text specifiec and file exists, the alt text needs to be always the file base name
-        if (altOrBlockRef !== "") {
-            altText = altOrBlockRef
-        } else {
-            altText = file ? file.basename : finalLink
-        }
-    } else if (dest === "mdTransclusion") {
+    
+    // 以‘|’分割别名
+    let altOrBlockRefContainVerticalBar = altOrBlockRef.search(/\|/)
+    let altTextSource = altOrBlockRef
+    let altOrBlockRefSource = altOrBlockRef
+
+    if (altOrBlockRefContainVerticalBar != -1){
+        altOrBlockRefSource = altOrBlockRef.split('|')[0]
+        altTextSource = altOrBlockRef.split('|')[1]
+    }
+
+    if (altTextSource !== "") {
+        altText = altTextSource
+    } else {
+        altText = file ? file.basename : finalLink
+    }
+
+    if (dest === "mdTransclusion") {
         // --> To skip encoding ^
-        encodedBlockRef = altOrBlockRef
+        encodedBlockRef = altOrBlockRefSource
         if (altOrBlockRef.startsWith("^")) {
             encodedBlockRef = encodeURI(encodedBlockRef.slice(1))
             encodedBlockRef = `^${encodedBlockRef}`
@@ -128,7 +138,7 @@ const createLink = async (dest: LinkType, originalLink: string, altOrBlockRef: s
     }
 
     if (["md"].includes(file.extension)) {
-        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}" data-pjax-state>${altText}</a>`
+        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}" data-pjax-state target="_Blank">${altText}</a>`
     } else if (["png", "jpg", "jpeg", "gif"].includes(file.extension)) {
         return `![${altText}](${encodeURI(finalLink)})`
     } else if (["mp4", "webm", "ogg"].includes(file.extension)) {
