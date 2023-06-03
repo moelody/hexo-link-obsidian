@@ -1,5 +1,6 @@
-./src/*
+src
 .vscode
 .yarnrc
+.yarn
 rollup.config.js
 tsconfig.json
