@@ -26,6 +26,9 @@ hexo.extend.filter.register(
         let relative_images = []
         let online_images = []
         let pattern = /!\[(.*?)\]\((.*?)\)/g
+        let regImg = new RegExp(
+            /\.(png|jpg|jpeg|gif|svg|ico|pdf|psd|bmp|rle|dib|tif|caw|nef|raf|orf|mrw|dcr|mos|raw|pef|srf|dng|x3f|cr2|erf|cin|dpx|gif|rla|rpf|img|el|eps|iff|tdi|pcx|hdr|rgbe|xyze|sgi|bw|rgb|pic|tga|vda|icb|vst|tif)$/g
+        );
         let dir_root = this.base_dir
         let dir_source = this.source_dir
         let dir_public = this.public_dir
@@ -38,10 +41,16 @@ hexo.extend.filter.register(
             let ourl = url
             if (url[0] == '/' || url[0] == '~' || url[1] == ':') {
                 absolute_images.push(url)
-            } else if (/^http/.test(url)) {
-                online_images.push(url)
-                let size = ~title.indexOf("|") ? title.split("|").pop().split("x") : [720, 360]
-                content = content.replace(match, convertOnlineMediaEmbedLink(url, size))
+            } else if (/^http/.test(url))
+            {
+                if (regImg.test(url))
+                {
+                    online_images.push(url)
+                } else
+                {
+                    let size = ~title.indexOf("|") ? title.split("|").pop().split("x") : [720, 360]
+                    content = content.replace(match, convertOnlineMediaEmbedLink(url, size))
+                }
                 continue;
             } else if (url) {
                 relative_images.push(url)
