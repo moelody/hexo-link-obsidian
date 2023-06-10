@@ -27,7 +27,7 @@ hexo.extend.filter.register(
         let online_images = []
         let pattern = /!\[(.*?)\]\((.*?)\)/g
         let regImg = new RegExp(
-            /\.(png|jpg|jpeg|gif|svg|ico|pdf|psd|bmp|rle|dib|tif|caw|nef|raf|orf|mrw|dcr|mos|raw|pef|srf|dng|x3f|cr2|erf|cin|dpx|gif|rla|rpf|img|el|eps|iff|tdi|pcx|hdr|rgbe|xyze|sgi|bw|rgb|pic|tga|vda|icb|vst|tif)$/g
+            /\.(png|jpg|jpeg|gif|svg|ico|pdf|psd|bmp|rle|dib|tif|caw|nef|raf|orf|mrw|dcr|mos|raw|pef|srf|dng|x3f|cr2|erf|cin|dpx|gif|rla|rpf|img|el|eps|iff|tdi|pcx|hdr|rgbe|xyze|sgi|bw|rgb|pic|tga|vda|icb|vst|tif)$/
         );
         let dir_root = this.base_dir
         let dir_source = this.source_dir
