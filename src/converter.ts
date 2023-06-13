@@ -259,7 +259,7 @@ const getAllLinkMatchesInFile = (md: string): LinkMatch[] => {
             let fileMatch = wikiMatch.match(fileRegex)
             if (fileMatch) {
                 // Web links are to be skipped
-                if (fileMatch[0].startsWith("http")) continue
+                // if (fileMatch[0].startsWith("http")) continue
                 let altMatch = wikiMatch.match(altRegex)
                 let linkMatch: LinkMatch = {
                     type: "wiki",
