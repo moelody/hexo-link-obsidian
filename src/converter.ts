@@ -138,7 +138,7 @@ const createLink = async (dest: LinkType, originalLink: string, altOrBlockRef: s
     }
 
     if (["md"].includes(file.extension)) {
-        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}" data-pjax-state target="_Blank">${altText}</a>`
+        return `<a href="/${finalLink}${encodedBlockRef && "#" + encodedBlockRef}/" data-pjax-state target="_Blank">${altText}</a>`
     } else if (["png", "jpg", "jpeg", "gif"].includes(file.extension)) {
         return `![${altText}](${encodeURI(finalLink)})`
     } else if (["mp4", "webm", "ogg"].includes(file.extension)) {

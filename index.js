@@ -20,8 +20,6 @@ hexo.extend.filter.register(
         } catch (err){
             log.info('hexo-link-obsidian failed to convert', data.source, ': ', err.message)
         }
-        console.log(this.config);
-        console.log(content);
 
         //获取图片链接
         let absolute_images = []
